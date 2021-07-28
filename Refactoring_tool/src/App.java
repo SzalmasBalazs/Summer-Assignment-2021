@@ -8,7 +8,8 @@ import directoryList.DirectoryList;
 public class App {
     public static void main(String[] args) throws Exception {
 
-        Path directory = Paths.get("D:\\Summer_Assigment\\Refactoring_tool\\test_files");
+        //Directory Path needs to be changed accordingly
+        Path directory = Paths.get("C:\\Users\\szalm\\Documents\\GitHub\\Summer-Assignment-2021\\Refactoring_tool\\test_files");
         List<Path> paths = DirectoryList.walk(directory);
         DirectoryList.listDirectoryContents(paths);
 
