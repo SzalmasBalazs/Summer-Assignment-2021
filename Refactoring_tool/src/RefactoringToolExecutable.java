@@ -26,7 +26,7 @@ public class RefactoringToolExecutable {
           with the test files for now. */ 
         Path newPath = Paths.get("/src/test_files");
 
-        /*relativize makeelatis a path form the current directory to the new path.*/
+        /*relativize makes a path form the current directory to the new path.*/
         Path currentDirToNewPath = currentDirectory.relativize(newPath);
 
         List<Path> paths = DirectoryReader.walk(currentDirToNewPath.toAbsolutePath());
