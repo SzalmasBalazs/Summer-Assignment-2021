@@ -1,2 +1,5 @@
 Refactoring_tool/src/directoryList/DirectoryReader.class
 Refactoring_tool/src/RefactoringToolExecutable.class
+Refactoring_tool/src/fileHandlers/DirectoryReader.class
+Refactoring_tool/src/fileHandlers/fileReader.class
+Refactoring_tool/src/test_files/test.class
