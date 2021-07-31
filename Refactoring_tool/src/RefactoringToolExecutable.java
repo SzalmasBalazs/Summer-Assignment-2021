@@ -1,16 +1,18 @@
 /*
  * DirReaderExec.java
  * 
- * Version 0.1.2
+ * Version 0.2.0
  *
- * 2021.07.30
+ * 2021.07.31
  * 
  */
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import directoryList.DirectoryReader;
+
+import fileHandlers.DirectoryReader;
+import fileHandlers.fileReader;
 
 
 public class RefactoringToolExecutable {
@@ -31,7 +33,12 @@ public class RefactoringToolExecutable {
 
         List<Path> paths = DirectoryReader.walk(currentDirToNewPath.toAbsolutePath());
         DirectoryReader.listDirectoryContents(paths);
-
+        
+        /*readFiles reads the files from the directory onto a String list,
+          that we're going to manipulate. */
+        List<String> fileArray = fileReader.readFiles(paths);
+        fileReader.peekFiles(fileArray);
+        
         
     }
 
