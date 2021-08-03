@@ -16,7 +16,7 @@ import java.util.ListIterator;
 public class RefactoringMethods {
 
     /**
-     * NOT FUNCTIONAL AS OF V 0.1.0, NEED TO ASK FOR ADVICE ON HOW TO MANIPULATE LISTS.
+     * NOT FUNCTIONAL AS OF V 0.1.0, NEED TO ASK FOR ADVICE ON HOW TO MANIPULATE LIST ITEMS.
      * @param fileArray
      * @return
      */
