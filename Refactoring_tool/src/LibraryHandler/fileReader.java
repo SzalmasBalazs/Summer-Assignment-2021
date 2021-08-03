@@ -1,12 +1,12 @@
 /*
  * DirectoryReader.java
  * 
- * Version 0.1.0
+ * Version 0.1.1
  *
- * 2021.07.31
+ * 2021.08.03
  * 
  */
-package fileHandlers;
+package LibraryHandler;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,6 +27,7 @@ public static List<String> returnArray = new ArrayList<>();
  */
 
 public static List<String> readFiles(List<Path> paths) throws IOException {
+
 
     for(Path ds : paths){
     returnArray = Files.readAllLines(ds);

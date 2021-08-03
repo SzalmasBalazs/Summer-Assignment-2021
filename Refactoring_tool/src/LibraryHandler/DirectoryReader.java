@@ -1,13 +1,13 @@
 /*
  * DirectoryReader.java
  * 
- * Version 0.2.0
+ * Version 0.2.1
  *
- * 2021.07.31
+ * 2021.08.03
  * 
  */
 
- package fileHandlers;
+ package LibraryHandler;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -35,6 +35,8 @@ public class DirectoryReader {
 
     public static List<Path> walk(Path path)throws IOException { 
 
+    System.out.println("Reading directory for files with the extension: "+extensionToInclude );
+
         try(DirectoryStream<Path> ds = Files.newDirectoryStream(path)){
 
          for(Path file : ds){
@@ -60,6 +62,10 @@ public class DirectoryReader {
      */
 
     public static void listDirectoryContents(List<Path> path){
+
+        System.out.println("The following files have been found: ");
+        System.out.println();
+
         for(Path temp : path){
             System.out.println(temp);
         }
