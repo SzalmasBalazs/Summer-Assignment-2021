@@ -39,7 +39,7 @@ public class IOHandler {
                                       ok = true; 
                   
                                   }  else{
-                                System.out.println("Invalid input. You must choose from the available options");
+                                System.out.println("Invalid input. You must choose from the available options (1-3)");
                                   }
                              
 
