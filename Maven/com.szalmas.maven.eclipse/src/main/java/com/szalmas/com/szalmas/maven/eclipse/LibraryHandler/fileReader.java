@@ -7,7 +7,7 @@
  * 
  */
 
-package LibraryHandler;
+package com.szalmas.com.szalmas.maven.eclipse.LibraryHandler;
 
 import java.io.IOException;
 import java.nio.file.Files;
