@@ -1,19 +1,14 @@
 package com.szalmas.com.szalmas.maven.eclipse;
 
-/*
- * DirReaderExec.java
- * 
- * Version 0.2.5
- *
- * 2021.08.03
- * 
- */
+import java.io.IOException;
 
-	import java.nio.file.Path;
-	import java.nio.file.Paths;
-	import java.util.List;
 
-	import com.szalmas.com.szalmas.maven.eclipse.LibraryHandler.*;
+		import java.nio.file.Path;
+		import java.nio.file.Paths;
+		import java.util.List;
+
+		import exceptions.RefactoringException;
+		import refactoring.*;
 	
 
 	public class RefactoringToolExecutable {
@@ -23,30 +18,60 @@ package com.szalmas.com.szalmas.maven.eclipse;
         First, the currentDirectory variable gets the path of the current directory,
         thanks to this, the directory path needs not to be manually changed.
         */
-        Path currentDirectory = Paths.get("/src");
-        System.out.println(currentDirectory);
+        Path rootDirectory = Paths.get("/src");
+        RefactoringHelpTools.configureJavaParserForProject(rootDirectory);
+        System.out.println(rootDirectory);
         /*The newPath variable contais the path to the folder
           with the test files for now. */ 
-        Path newPath = Paths.get("/src/test_files");
+        Path newPath = Paths.get("/src/sample_files");
 
         /*relativize makes a path form the current directory to the new path.*/
-        Path currentDirToNewPath = currentDirectory.relativize(newPath);
-      
+        Path currentDirToNewPath = rootDirectory.relativize(newPath);
+        
         List<Path> paths = DirectoryReader.walk(currentDirToNewPath.toAbsolutePath());
         DirectoryReader.listDirectoryContents(paths);
         
         for(Path ds : paths) {
-        	methodParser.MethodCallPrinter(ds);
+        RefactoringHelpTools.callDotPrinter(ds);
         }
         
-        /*readFiles reads the files from the directory onto a String list,
-          that we're going to manipulate. */
-       // List<String> fileArray = fileReader.readFiles(paths);
-       // fileReader.peekFiles(fileArray);
+        for(Path ds : paths) {
+        	callUserInput(ds,rootDirectory);
+        }
         
         
         
     }
-    
-}
+		
+		/**
+		 * Calls refactoring methods based on user input.
+		 * 
+		 * 
+		 * @param path
+		 * @param rootDirectory
+		 * @throws IOException
+		 * @throws RefactoringException
+		 */
+		public static void callUserInput(Path path, Path rootDirectory) throws IOException, RefactoringException {
+			
+			System.out.println("Please choose wich refactoring you would like to preform: "
+					+ "\n 1. Rename a method name"
+					+ "\n 2. Extract Method");
+				int num = RefactoringHelpTools.readInt(1,2);
+		switch(num) {
+		
+		case(1): {
+			RenameRefactoring.callMethodRenamingInit(path);
+			
+			break;
+		}case(2): {
+			
+			System.out.println("This feature is currently unavailable.");
+			
+			break;
+		}
+		
+		}
+		}
+	}
 
