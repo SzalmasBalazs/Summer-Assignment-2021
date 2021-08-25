@@ -13,6 +13,8 @@ How to Use:
 
 -Run the RefactoringToolExecutable.java as a Java application.
 
+-Choose from the available options (1 or 2) of Method renaming or extract method refactoring.
+
 -The app also outputs a .dot file with the AST of the file(s) that are being refactored, this can be (as of 08.19.21)
 
  found in the root directory of the app. With the help of GraphViz you can turn this file into a graph.
