@@ -11,7 +11,6 @@ package refactoring;
 
 
 	import java.io.IOException;
-	import java.io.PrintWriter;
 	import java.nio.file.Path;
 	import java.util.ArrayList;
 	import java.util.List;
@@ -31,7 +30,7 @@ package refactoring;
 	
 	
 
-public class RenameRefactoring {
+public class RenameMethodDeclaration {
 	
 	 
 	
@@ -46,26 +45,26 @@ public class RenameRefactoring {
 	 * @throws IOException
 	 * @throws RefactoringException
 	 */
+	
 	public static void callMethodRenamingInit(Path path) throws IOException, RefactoringException {
 		
 		System.out.println("Wich method would you like to rename?");
 		
-		List<ClassOrInterfaceDeclaration> classAndOrInterfaces = RefactoringHelpTools.getClassesOrInterfaces(path);	
-		RefactoringHelpTools.ListMethodsInFile(classAndOrInterfaces);
+		List<ClassOrInterfaceDeclaration> classAndOrInterfaces = RefactoringHelpTools.FindClassesOrInterfaces(path);	
+		RefactoringHelpTools.listMethodsInFile(classAndOrInterfaces);
 		
 			String targetMethodName = RefactoringHelpTools.readString();
 				
 			System.out.println("What would you like to rename the method to?");
 			String newMethodName = RefactoringHelpTools.readString();
 				
-			MethodDeclaration targetMethod = FindAndValidateMethod(classAndOrInterfaces,targetMethodName,newMethodName,path);
+			MethodDeclaration targetMethod = findAndValidateMethod(classAndOrInterfaces,targetMethodName,newMethodName,path);
 			for(MethodDeclaration d: refactoringRelevantMethods) {	
 				System.out.println(d.getNameAsString() +" , "+d.getDeclarationAsString());
-				
 			}
 			System.out.println("\n");
-		String kek = preformRefactoring(targetMethod,targetMethodName,classAndOrInterfaces,path,newMethodName);
-		System.out.println(kek);
+		String out = performRefactoring(targetMethod,targetMethodName,classAndOrInterfaces,path,newMethodName);
+		System.out.println(out);
 				
 	}
 	
@@ -80,7 +79,7 @@ public class RenameRefactoring {
 	 * @return
 	 * @throws IOException
 	 */
-	private static  String preformRefactoring(MethodDeclaration targetMethod, String targetMethodName, List<ClassOrInterfaceDeclaration> 
+	private static  String performRefactoring(MethodDeclaration targetMethod, String targetMethodName, List<ClassOrInterfaceDeclaration> 
 					classAndOrInterfaces,Path path, String newMethodName) throws IOException {
 		
 		CompilationUnit cu = LexicalPreservingPrinter.setup(StaticJavaParser.parse(path));
@@ -103,30 +102,13 @@ public class RenameRefactoring {
 			}
 			
 		}
-		writeOntoDisk(cu,path);
+		
+		
+		RefactoringHelpTools.writeOut(cu, path);
 		return "Renamed Method: "+targetMethodName +" to : "+ newMethodName;
 	}
 
-	/**
-	 * Writes the CompilationUnit onto the disk, into the sample file folder
-	 * overriding the old file.
-	 * 
-	 * @param cu
-	 * @param path
-	 * @throws IOException
-	 */
-	
-	private static void writeOntoDisk(CompilationUnit cu, Path path) throws IOException {
-		
-		try {
-		PrintWriter out = new PrintWriter(path.toString());
-		out.println(LexicalPreservingPrinter.print(cu));
-		out.close();
-		}catch(Exception e ) {
-			e.getMessage();
-		}
-		
-	}
+
 	/**
 	 * finds the method declaration of the target method.
 	 * 
@@ -138,7 +120,7 @@ public class RenameRefactoring {
 	 * @throws RefactoringException
 	 */
 	
-	private static MethodDeclaration FindAndValidateMethod(List<ClassOrInterfaceDeclaration> classAndOrInterfaces, 
+	private static MethodDeclaration findAndValidateMethod(List<ClassOrInterfaceDeclaration> classAndOrInterfaces, 
 			String targetMethodName, String newMethodName,Path path) throws RefactoringException {
 		
 		MethodDeclaration validTargetMethod = null;
@@ -181,9 +163,8 @@ public class RenameRefactoring {
 	 */
 	private static boolean compareNamesOfCurrentAndTargetMethod(MethodDeclaration currentMethod,
 			String targetMethodName) {
-				String currentMethodName = currentMethod.getNameAsString();
 		
-				if(currentMethodName.contentEquals(targetMethodName)) {
+				if(currentMethod.getNameAsString().contentEquals(targetMethodName)) {
 					return true;
 				}
 				
