@@ -25,7 +25,8 @@ package refactoring;
 	import com.github.javaparser.ast.expr.MethodCallExpr;
 	import com.github.javaparser.printer.DotPrinter;
 	import com.github.javaparser.printer.YamlPrinter;
-	import com.github.javaparser.symbolsolver.JavaSymbolSolver;
+import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
+import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 	import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 	import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 	import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
@@ -109,7 +110,7 @@ public class RefactoringHelpTools {
        * @return
        * @throws IOException
        */
-      public static List<ClassOrInterfaceDeclaration> getClassesOrInterfaces(Path path) throws IOException {
+      public static List<ClassOrInterfaceDeclaration> FindClassesOrInterfaces(Path path) throws IOException {
     	  
     	  CompilationUnit cu = StaticJavaParser.parse(path);
     	  
@@ -123,7 +124,7 @@ public class RefactoringHelpTools {
        * @param list
        */
       
-      public static void ListClassOrInterfaceDeclarations(List<ClassOrInterfaceDeclaration> list) {
+      public static void listClassOrInterfaceDeclarations(List<ClassOrInterfaceDeclaration> list) {
     	  for(ClassOrInterfaceDeclaration n : list) {
   			
   			System.out.println(n.getNameAsString());
@@ -136,7 +137,7 @@ public class RefactoringHelpTools {
        * 
        * @param list
        */
-      public static void ListMethodsInFile(List<ClassOrInterfaceDeclaration> list) {
+      public static void listMethodsInFile(List<ClassOrInterfaceDeclaration> list) {
     	 
     	  for(ClassOrInterfaceDeclaration classOrInterface : list) {
     		  for(MethodDeclaration method : classOrInterface.getMethods()) {
@@ -226,5 +227,26 @@ public class RefactoringHelpTools {
 		CompilationUnit cu = StaticJavaParser.parse(path);
 		YamlPrinter printer = new YamlPrinter(true);
 		System.out.println(printer.output(cu));
+	}
+	
+	/**
+	 * Writes the CompilationUnit onto the disk, into the sample file folder
+	 * overriding the old file.
+	 * 
+	 * @param cu
+	 * @param path
+	 * @throws IOException
+	 */
+	
+	public static void writeOut(CompilationUnit cu, Path path) throws IOException {
+		
+		try {
+		PrintWriter out = new PrintWriter(path.toString());
+		out.println(LexicalPreservingPrinter.print(cu));
+		out.close();
+		}catch(Exception e ) {
+			e.getMessage();
+		}
+		
 	}
 }

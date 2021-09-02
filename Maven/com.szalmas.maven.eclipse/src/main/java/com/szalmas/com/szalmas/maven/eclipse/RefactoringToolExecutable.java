@@ -53,25 +53,53 @@ import java.io.IOException;
 		 * @throws RefactoringException
 		 */
 		public static void callUserInput(Path path, Path rootDirectory) throws IOException, RefactoringException {
+			RefactoringHelpTools.callYalmPrinter(path);
+			boolean ok = true;
 			
+		while(ok == true) {
 			System.out.println("Please choose wich refactoring you would like to preform: "
 					+ "\n 1. Rename a method name"
-					+ "\n 2. Extract Method");
-				int num = RefactoringHelpTools.readInt(1,2);
+					+ "\n 2. Remove comments (excluding JavaDoc comments.)"
+					+ "\n 3. Add JavaDoc comments for all methods."
+					+ "\n 4. Remove JavaDoc comments from all methods."
+					+ "\n 8. Exit");
+			
+				int num = RefactoringHelpTools.readInt(1,8);
 		switch(num) {
 		
 		case(1): {
-			RenameRefactoring.callMethodRenamingInit(path);
+			RenameMethodDeclaration.callMethodRenamingInit(path);
 			
 			break;
-		}case(2): {
+				}
+		case(2): {
 			
-			System.out.println("This feature is currently unavailable.");
+			System.out.println(CommentRefactoring.PerfromCommentRemoval(path));
 			
 			break;
-		}
+				}
+		case(3): {
+			
+			System.out.println(CommentRefactoring.AddJavaDocCommentsForAllMethods(path));
+			
+			break;
 		
+				}
+		case(4): {
+			
+			System.out.println(CommentRefactoring.RemoveJavaDocCommentsForAllMethods(path));
+			
+			break;
 		}
+		case(8): {
+			
+			ok = false;
+			
+			break;
+		
+		
+					}
+				}
+			}
 		}
 	}
-
