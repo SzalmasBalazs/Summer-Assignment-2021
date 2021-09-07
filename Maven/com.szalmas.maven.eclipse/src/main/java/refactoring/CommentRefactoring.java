@@ -16,7 +16,7 @@ package refactoring;
 
 public class CommentRefactoring {
 	
-	public static String PerfromCommentRemoval (Path path) throws IOException {
+	public static String perfromCommentRemoval (Path path) throws IOException {
 		
 		CompilationUnit cu = LexicalPreservingPrinter.setup(StaticJavaParser.parse(path));
 		
@@ -37,13 +37,13 @@ public class CommentRefactoring {
 			}
 			
 		
-		RefactoringHelpTools.writeOut(cu, path);
+		RefactoringHelpClass.writeOut(cu, path);
 		
 		
 		return ("Removed commented out code.");
 	}
 	
-	public static String AddJavaDocCommentsForAllMethods(Path path) throws IOException {
+	public static String addJavaDocCommentsForAllMethods(Path path) throws IOException {
 		
 		CompilationUnit cu = LexicalPreservingPrinter.setup(StaticJavaParser.parse(path));
 		
@@ -58,11 +58,11 @@ public class CommentRefactoring {
 			}
 
 		}
-		RefactoringHelpTools.writeOut(cu, path);
+		RefactoringHelpClass.writeOut(cu, path);
 		return ("Added JavaDoc comment for all methods.");
 		
 	}
-	public static String RemoveJavaDocCommentsForAllMethods(Path path) throws IOException {
+	public static String removeJavaDocCommentsForAllMethods(Path path) throws IOException {
 		
 		CompilationUnit cu = LexicalPreservingPrinter.setup(StaticJavaParser.parse(path));
 		
@@ -80,7 +80,7 @@ public class CommentRefactoring {
 			
 			
 		}
-		RefactoringHelpTools.writeOut(cu, path);
+		RefactoringHelpClass.writeOut(cu, path);
 		
 		
 		return ("Removed JavaDoc comment for all methods.");
