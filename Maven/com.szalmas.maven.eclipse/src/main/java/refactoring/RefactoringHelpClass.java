@@ -22,11 +22,13 @@ package refactoring;
 	import com.github.javaparser.ast.CompilationUnit;
 	import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 	import com.github.javaparser.ast.body.MethodDeclaration;
+	import com.github.javaparser.ast.body.VariableDeclarator;
 	import com.github.javaparser.ast.expr.MethodCallExpr;
+
 	import com.github.javaparser.printer.DotPrinter;
 	import com.github.javaparser.printer.YamlPrinter;
-import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
-import com.github.javaparser.symbolsolver.JavaSymbolSolver;
+	import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
+	import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 	import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 	import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 	import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
@@ -40,14 +42,14 @@ import com.github.javaparser.symbolsolver.JavaSymbolSolver;
  *
  */
 	
-public class RefactoringHelpTools {
+public class RefactoringHelpClass {
 	
         /**
-         * Reads an integer within a range of a floor and a ceiling.
+         * Reads an integer from the user within a range of a minValue. and a maxValue.
          * 
          * @return
          */
-        public static int readInt(int floor, int ceiling){
+        public static int readInt(int minValue, int maxValue){
 
             boolean ok = false; 
                  int num = 0;
@@ -58,7 +60,7 @@ public class RefactoringHelpTools {
 
                          try {
                                 num = Integer.valueOf(reader.readLine());
-                                 if(num <= ceiling && num >= floor){
+                                 if(num <= maxValue && num >= minValue){
                                       ok = true; 
                   
                                   }  else{
@@ -137,7 +139,7 @@ public class RefactoringHelpTools {
        * 
        * @param list
        */
-      public static void listMethodsInFile(List<ClassOrInterfaceDeclaration> list) {
+      public static void listMethods(List<ClassOrInterfaceDeclaration> list) {
     	 
     	  for(ClassOrInterfaceDeclaration classOrInterface : list) {
     		  for(MethodDeclaration method : classOrInterface.getMethods()) {
@@ -156,7 +158,7 @@ public class RefactoringHelpTools {
        * @return
        * @throws IOException
        */
-      public static List<MethodDeclaration> getMethodDeclarationsInFile(Path path) throws IOException {
+      public static List<MethodDeclaration> findMethodDeclarations(Path path) throws IOException {
     	  
     	  CompilationUnit cu = StaticJavaParser.parse(path);
     	  
@@ -173,7 +175,7 @@ public class RefactoringHelpTools {
       * @return
       * @throws IOException
       */
-  	public static List<MethodCallExpr> getMethodCallExprInFile(Path path) throws IOException {
+  	public static List<MethodCallExpr> findMethodCallExpr(Path path) throws IOException {
 	  
 	  CompilationUnit cu = StaticJavaParser.parse(path);
 	  
@@ -181,6 +183,18 @@ public class RefactoringHelpTools {
 	    	  
   }
   	
+  	
+  	public static void listVariableDeclarations(List<VariableDeclarator> list){
+  		
+  		for(VariableDeclarator V : list) {
+  			
+  			System.out.println(V.getNameAsString());
+  			
+  		}
+  		
+  		
+
+  	}
   	/**
   	 * Configures JavaParsers Type solver for the project.
   	 * 
@@ -205,8 +219,9 @@ public class RefactoringHelpTools {
      * @throws IOException
      */
   	
+  	
 	@SuppressWarnings("unused")
-	public static void callDotPrinter(Path path) throws IOException {
+	public static void writeTreeToDotFile(Path path) throws IOException {
 		CompilationUnit cu = StaticJavaParser.parse(path);
 		DotPrinter printer = new DotPrinter(true);
 		try(FileWriter fileWriter = new FileWriter("ast.dot");
@@ -223,7 +238,7 @@ public class RefactoringHelpTools {
      */
 	
 	@SuppressWarnings("unused")
-	public static void callYalmPrinter(Path path) throws IOException {
+	public static void printASTofFile(Path path) throws IOException {
 		CompilationUnit cu = StaticJavaParser.parse(path);
 		YamlPrinter printer = new YamlPrinter(true);
 		System.out.println(printer.output(cu));
@@ -248,5 +263,12 @@ public class RefactoringHelpTools {
 			e.getMessage();
 		}
 		
+	}
+
+	public static List<VariableDeclarator> findVariableDeclarationsFromFile(Path path) throws IOException {
+		
+		CompilationUnit cu = LexicalPreservingPrinter.setup(StaticJavaParser.parse(path));
+		
+		return cu.findAll(VariableDeclarator.class);
 	}
 }
