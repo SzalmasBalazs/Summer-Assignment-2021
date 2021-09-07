@@ -19,7 +19,7 @@ import java.io.IOException;
         thanks to this, the directory path needs not to be manually changed.
         */
         Path rootDirectory = Paths.get("/src");
-        RefactoringHelpTools.configureJavaParserForProject(rootDirectory);
+        RefactoringHelpClass.configureJavaParserForProject(rootDirectory);
         System.out.println(rootDirectory);
         /*The newPath variable contais the path to the folder
           with the test files for now. */ 
@@ -32,7 +32,7 @@ import java.io.IOException;
         DirectoryReader.listDirectoryContents(paths);
         
         for(Path ds : paths) {
-        RefactoringHelpTools.callDotPrinter(ds);
+        RefactoringHelpClass.writeTreeToDotFile(ds);
         }
         
         for(Path ds : paths) {
@@ -53,7 +53,7 @@ import java.io.IOException;
 		 * @throws RefactoringException
 		 */
 		public static void callUserInput(Path path, Path rootDirectory) throws IOException, RefactoringException {
-			RefactoringHelpTools.callYalmPrinter(path);
+		//	RefactoringHelpTools.callYalmPrinter(path);
 			boolean ok = true;
 			
 		while(ok == true) {
@@ -62,9 +62,10 @@ import java.io.IOException;
 					+ "\n 2. Remove comments (excluding JavaDoc comments.)"
 					+ "\n 3. Add JavaDoc comments for all methods."
 					+ "\n 4. Remove JavaDoc comments from all methods."
+					+ "\n 5. Rename variable."
 					+ "\n 8. Exit");
 			
-				int num = RefactoringHelpTools.readInt(1,8);
+				int num = RefactoringHelpClass.readInt(1,8);
 		switch(num) {
 		
 		case(1): {
@@ -74,20 +75,26 @@ import java.io.IOException;
 				}
 		case(2): {
 			
-			System.out.println(CommentRefactoring.PerfromCommentRemoval(path));
+			System.out.println(CommentRefactoring.perfromCommentRemoval(path));
 			
 			break;
 				}
 		case(3): {
 			
-			System.out.println(CommentRefactoring.AddJavaDocCommentsForAllMethods(path));
+			System.out.println(CommentRefactoring.addJavaDocCommentsForAllMethods(path));
 			
 			break;
 		
 				}
 		case(4): {
 			
-			System.out.println(CommentRefactoring.RemoveJavaDocCommentsForAllMethods(path));
+			System.out.println(CommentRefactoring.removeJavaDocCommentsForAllMethods(path));
+			
+			break;
+		}
+		case(5): {
+			
+			RenameVariableDeclaration.callVariableRenamingInit(path);
 			
 			break;
 		}
