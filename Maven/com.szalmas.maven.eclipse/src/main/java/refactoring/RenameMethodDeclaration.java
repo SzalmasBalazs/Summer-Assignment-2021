@@ -48,15 +48,15 @@ public class RenameMethodDeclaration {
 	
 	public static void callMethodRenamingInit(Path path) throws IOException, RefactoringException {
 		
-		System.out.println("Wich method would you like to rename?");
+		System.out.println("Which method would you like to rename?");
 		
-		List<ClassOrInterfaceDeclaration> classAndOrInterfaces = RefactoringHelpTools.FindClassesOrInterfaces(path);	
-		RefactoringHelpTools.listMethodsInFile(classAndOrInterfaces);
+		List<ClassOrInterfaceDeclaration> classAndOrInterfaces = RefactoringHelpClass.FindClassesOrInterfaces(path);	
+		RefactoringHelpClass.listMethods(classAndOrInterfaces);
 		
-			String targetMethodName = RefactoringHelpTools.readString();
+			String targetMethodName = RefactoringHelpClass.readString();
 				
 			System.out.println("What would you like to rename the method to?");
-			String newMethodName = RefactoringHelpTools.readString();
+			String newMethodName = RefactoringHelpClass.readString();
 				
 			MethodDeclaration targetMethod = findAndValidateMethod(classAndOrInterfaces,targetMethodName,newMethodName,path);
 			for(MethodDeclaration d: refactoringRelevantMethods) {	
@@ -90,6 +90,7 @@ public class RenameMethodDeclaration {
 			if(methodCallExpr.getNameAsString().equals(targetMethodName)) {
 				
 				methodCallExpr.setName(newMethodName);
+				
 			
 			}
 		}
@@ -98,13 +99,12 @@ public class RenameMethodDeclaration {
 			if(refactoringRelevantMethods.contains(methodDeclaration)) {
 
 				methodDeclaration.setName(newMethodName);
-				
 			}
 			
 		}
 		
 		
-		RefactoringHelpTools.writeOut(cu, path);
+		RefactoringHelpClass.writeOut(cu, path);
 		return "Renamed Method: "+targetMethodName +" to : "+ newMethodName;
 	}
 
@@ -116,7 +116,7 @@ public class RenameMethodDeclaration {
 	 * @param targetMethodName
 	 * @param newMethodName
 	 * @param path
-	 * @return
+	 * @return 
 	 * @throws RefactoringException
 	 */
 	
@@ -127,7 +127,7 @@ public class RenameMethodDeclaration {
 			for(ClassOrInterfaceDeclaration classOrInterface : classAndOrInterfaces) {
 				for(MethodDeclaration currentMethod :  classOrInterface.getMethods()) {
 					
-					if(compareNamesOfCurrentAndTargetMethod(currentMethod,targetMethodName)) {
+					if(compareMethodNames(currentMethod,targetMethodName)) {
 						
 						validTargetMethod = currentMethod;
 						refactoringRelevantMethods.add(currentMethod);
@@ -146,13 +146,30 @@ public class RenameMethodDeclaration {
 			 * 
 			 * */
 			
-			String validTargetMethodName = validTargetMethod.getNameAsString();
-			if(validTargetMethodName.equals(newMethodName)){
-				throw new RefactoringException("New Method name cannot be the old one!");
-			}
+		checkOldAndNewMethodName(validTargetMethod,newMethodName);
 			
 		return validTargetMethod;
 	}
+	
+	
+	/**Check if the validated methods name is the same as the new method name.
+	 * Throws an Refactoring Exception if true.
+	 * 
+	 * @param validTargetMethod
+	 * @param newMethodName
+	 * @throws RefactoringExcapetion
+	 */
+	private static void checkOldAndNewMethodName(MethodDeclaration validTargetMethod, String newMethodName) 
+												throws RefactoringException {
+		
+		if(compareMethodNames(validTargetMethod,newMethodName)) {
+			
+			throw new RefactoringException("New Method name cannot be the old one!");
+			
+		}
+		
+	}
+
 	/**
 	 * Compares the names of two method declarations.
 	 * 
@@ -161,7 +178,7 @@ public class RenameMethodDeclaration {
 	 * @param targetMethodName
 	 * @return
 	 */
-	private static boolean compareNamesOfCurrentAndTargetMethod(MethodDeclaration currentMethod,
+	private static boolean compareMethodNames(MethodDeclaration currentMethod,
 			String targetMethodName) {
 		
 				if(currentMethod.getNameAsString().contentEquals(targetMethodName)) {
