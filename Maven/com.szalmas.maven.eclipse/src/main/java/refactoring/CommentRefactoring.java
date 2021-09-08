@@ -16,7 +16,14 @@ package refactoring;
 
 public class CommentRefactoring {
 	
-	public static String perfromCommentRemoval (Path path) throws IOException {
+	 /**
+     *	Removes all non-JavaDoc comments from a file.
+     * 
+     * @return
+     * @param path
+     * @throws IOException
+     */
+	public static String removeAllComments (Path path) throws IOException {
 		
 		CompilationUnit cu = LexicalPreservingPrinter.setup(StaticJavaParser.parse(path));
 		
@@ -43,6 +50,15 @@ public class CommentRefactoring {
 		return ("Removed commented out code.");
 	}
 	
+	 /**
+     * Adds auto-generated JavaDoc comments to all methods that do not have one already.
+     * 
+     * @return
+     * @param path
+     * @throws IOException
+     */
+	
+	
 	public static String addJavaDocCommentsForAllMethods(Path path) throws IOException {
 		
 		CompilationUnit cu = LexicalPreservingPrinter.setup(StaticJavaParser.parse(path));
@@ -62,6 +78,15 @@ public class CommentRefactoring {
 		return ("Added JavaDoc comment for all methods.");
 		
 	}
+	
+	 /**
+     * Removes all JavaDoc comments from a file
+     * 
+     * @return
+     * @param path
+     * @throws IOException
+     */
+	
 	public static String removeJavaDocCommentsForAllMethods(Path path) throws IOException {
 		
 		CompilationUnit cu = LexicalPreservingPrinter.setup(StaticJavaParser.parse(path));
