@@ -7,7 +7,9 @@ import java.io.IOException;
 		import java.nio.file.Paths;
 		import java.util.List;
 
-		import exceptions.RefactoringException;
+import com.github.javaparser.ast.body.VariableDeclarator;
+
+import exceptions.RefactoringException;
 		import refactoring.*;
 	
 
@@ -75,7 +77,7 @@ import java.io.IOException;
 				}
 		case(2): {
 			
-			System.out.println(CommentRefactoring.perfromCommentRemoval(path));
+			System.out.println(CommentRefactoring.removeAllComments(path));
 			
 			break;
 				}
@@ -94,7 +96,15 @@ import java.io.IOException;
 		}
 		case(5): {
 			
-			RenameVariableDeclaration.callVariableRenamingInit(path);
+			System.out.println("Which variable would you like to rename?");
+			List<VariableDeclarator> variableDeclarations = RefactoringHelpClass.findVariableDeclarationsFromFile(path);
+			RefactoringHelpClass.listVariableDeclarations(variableDeclarations);
+			String targetVariableName = RefactoringHelpClass.readString();
+			
+			System.out.println("What would you like to rename the variable to?");
+			String newVariableName = RefactoringHelpClass.readString();
+			
+			RenameVariableDeclaration.renameVariable(path,variableDeclarations,targetVariableName,newVariableName);
 			
 			break;
 		}
