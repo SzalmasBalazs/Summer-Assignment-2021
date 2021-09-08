@@ -10,40 +10,50 @@ import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
+import exceptions.RefactoringException;
+
 import com.github.javaparser.StaticJavaParser;
 
 
 public class RenameVariableDeclaration {
 
-	public static void callVariableRenamingInit(Path path) throws IOException {
+	
+	/**
+     * Checks if the target variable name can be found within the Variable declarations, if yes renames all instances of the variable
+     * 
+     * @return
+     * @param path
+     * @param targetVariableName
+     * @param newVariableName
+     * @throws IOException
+     * @thorws RefactoringException
+     */
+	
+	public static void renameVariable(Path path, List<VariableDeclarator> variableDeclarations, String targetVariableName, String newVariableName) throws IOException, RefactoringException {
 
-		System.out.println("Which variable would you like to rename?");
-		List<VariableDeclarator> variableDeclarations = RefactoringHelpClass.findVariableDeclarationsFromFile(path);
-		RefactoringHelpClass.listVariableDeclarations(variableDeclarations);
-		
-		String targetVariableName = lookForTargetVariableInDeclarations(variableDeclarations);
-		
-		
-		System.out.println("What would you like to rename the variable to?");
-		String newVariableName = RefactoringHelpClass.readString();
-		
-		String out = performVariableRenaming(targetVariableName,newVariableName,path);
+		String validatedTargetVariableName = lookForTargetVariableInDeclarations(variableDeclarations,targetVariableName);
+		String out = performVariableRenaming(validatedTargetVariableName,newVariableName,path);
 		System.out.println(out);
 		
 	}
-
-	private static String lookForTargetVariableInDeclarations(List<VariableDeclarator> variableDeclarations) {
+	
+	/**
+     * Checks if the target variable name can be found within the Variable declarations, if yes it returns the variable name, if not it throws an exception.
+     * 
+     * @return
+     * @param variableDeclarations
+     * @param targetVariableName
+     * @thorws RefactoringException
+     */
+	
+	
+	private static String lookForTargetVariableInDeclarations(List<VariableDeclarator> variableDeclarations,String targetVariableName)throws RefactoringException {
 		
-		boolean ok = false;
-		String returnString = "";
 		
-		do {
-			
-			returnString = RefactoringHelpClass.readString();
 			VariableDeclarator targetVariable = null;
 			for(VariableDeclarator V : variableDeclarations) {
 				
-				if(V.getNameAsString().equals(returnString)) {
+				if(V.getNameAsString().equals(targetVariableName)) {
 					
 					targetVariable = V;
 					
@@ -51,19 +61,25 @@ public class RenameVariableDeclaration {
 			}
 			if(variableDeclarations.contains(targetVariable)) {
 				
-				ok = true;
+				return targetVariableName;
 				
 				} else {
 				
-					System.out.println("The chosen variable cannot be found, please try again.");
+					throw new RefactoringException("The chosen variable cannot be found.");
 				
 						}
-			
-			}while(!ok);
-		
-		return returnString;
 	}
-
+	/**
+     * Renames all declarations of target variable to the new variable name.
+     * 
+     * @return
+     * @param newVariableName
+     * @param targetVariableName
+     * @param path
+     * @thorws IOException
+     */
+	
+	
 	private static String performVariableRenaming(String targetVariableName, String newVariableName,Path path) throws IOException {
 		
 		CompilationUnit cu = LexicalPreservingPrinter.setup(StaticJavaParser.parse(path));
