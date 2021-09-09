@@ -1,4 +1,4 @@
-package refactoring;
+package commentRefactoring;
 
 	import java.io.IOException;
 	import java.nio.file.Path;
@@ -12,9 +12,11 @@ package refactoring;
 
 	import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
+import refactoring.RefactoringHelper;
 
 
-public class CommentRefactoring {
+
+public class CommentManipulator {
 	
 	 /**
      *	Removes all non-JavaDoc comments from a file.
@@ -44,7 +46,7 @@ public class CommentRefactoring {
 			}
 			
 		
-		RefactoringHelpClass.writeOut(cu, path);
+		RefactoringHelper.writeOut(cu, path);
 		
 		
 		return ("Removed commented out code.");
@@ -74,7 +76,7 @@ public class CommentRefactoring {
 			}
 
 		}
-		RefactoringHelpClass.writeOut(cu, path);
+		RefactoringHelper.writeOut(cu, path);
 		return ("Added JavaDoc comment for all methods.");
 		
 	}
@@ -105,7 +107,7 @@ public class CommentRefactoring {
 			
 			
 		}
-		RefactoringHelpClass.writeOut(cu, path);
+		RefactoringHelper.writeOut(cu, path);
 		
 		
 		return ("Removed JavaDoc comment for all methods.");

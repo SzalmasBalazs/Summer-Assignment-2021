@@ -42,7 +42,7 @@ package refactoring;
  *
  */
 	
-public class RefactoringHelpClass {
+public class RefactoringHelper {
 	
         /**
          * Reads an integer from the user within a range of a minValue. and a maxValue.

@@ -1,4 +1,4 @@
-package refactoring;
+package renameRefactoring;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,11 +11,12 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.printer.lexicalpreservation.LexicalPreservingPrinter;
 
 import exceptions.RefactoringException;
+import refactoring.RefactoringHelper;
 
 import com.github.javaparser.StaticJavaParser;
 
 
-public class RenameVariableDeclaration {
+public class VariableDeclarationRenamer {
 
 	
 	/**
@@ -109,7 +110,7 @@ public class RenameVariableDeclaration {
 			}
 				
 		}
-		RefactoringHelpClass.writeOut(cu, path);
+		RefactoringHelper.writeOut(cu, path);
 		return "Renamed all instances of "+targetVariableName+" to : "+newVariableName;
 	}
 	

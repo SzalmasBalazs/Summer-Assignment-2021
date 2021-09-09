@@ -7,10 +7,14 @@ import java.io.IOException;
 		import java.nio.file.Paths;
 		import java.util.List;
 
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 
+import commentRefactoring.CommentManipulator;
 import exceptions.RefactoringException;
 		import refactoring.*;
+import renameRefactoring.MethodDeclarationRenamer;
+import renameRefactoring.VariableDeclarationRenamer;
 	
 
 	public class RefactoringToolExecutable {
@@ -21,7 +25,7 @@ import exceptions.RefactoringException;
         thanks to this, the directory path needs not to be manually changed.
         */
         Path rootDirectory = Paths.get("/src");
-        RefactoringHelpClass.configureJavaParserForProject(rootDirectory);
+        RefactoringHelper.configureJavaParserForProject(rootDirectory);
         System.out.println(rootDirectory);
         /*The newPath variable contais the path to the folder
           with the test files for now. */ 
@@ -34,7 +38,7 @@ import exceptions.RefactoringException;
         DirectoryReader.listDirectoryContents(paths);
         
         for(Path ds : paths) {
-        RefactoringHelpClass.writeTreeToDotFile(ds);
+        RefactoringHelper.writeTreeToDotFile(ds);
         }
         
         for(Path ds : paths) {
@@ -67,44 +71,53 @@ import exceptions.RefactoringException;
 					+ "\n 5. Rename variable."
 					+ "\n 8. Exit");
 			
-				int num = RefactoringHelpClass.readInt(1,8);
+				int num = RefactoringHelper.readInt(1,8);
 		switch(num) {
 		
 		case(1): {
-			RenameMethodDeclaration.callMethodRenamingInit(path);
 			
+			System.out.println("Which method would you like to rename?");
+			
+			List<ClassOrInterfaceDeclaration> classAndOrInterfaces = RefactoringHelper.FindClassesOrInterfaces(path);	
+			RefactoringHelper.listMethods(classAndOrInterfaces);
+			
+				String targetMethodName = RefactoringHelper.readString();
+					
+				System.out.println("What would you like to rename the method to?");
+				String newMethodName = RefactoringHelper.readString();
+				MethodDeclarationRenamer.RenameMethod(path,targetMethodName,newMethodName);
 			break;
 				}
 		case(2): {
 			
-			System.out.println(CommentRefactoring.removeAllComments(path));
+			System.out.println(CommentManipulator.removeAllComments(path));
 			
 			break;
 				}
 		case(3): {
 			
-			System.out.println(CommentRefactoring.addJavaDocCommentsForAllMethods(path));
+			System.out.println(CommentManipulator.addJavaDocCommentsForAllMethods(path));
 			
 			break;
 		
 				}
 		case(4): {
 			
-			System.out.println(CommentRefactoring.removeJavaDocCommentsForAllMethods(path));
+			System.out.println(CommentManipulator.removeJavaDocCommentsForAllMethods(path));
 			
 			break;
 		}
 		case(5): {
 			
 			System.out.println("Which variable would you like to rename?");
-			List<VariableDeclarator> variableDeclarations = RefactoringHelpClass.findVariableDeclarationsFromFile(path);
-			RefactoringHelpClass.listVariableDeclarations(variableDeclarations);
-			String targetVariableName = RefactoringHelpClass.readString();
+			List<VariableDeclarator> variableDeclarations = RefactoringHelper.findVariableDeclarationsFromFile(path);
+			RefactoringHelper.listVariableDeclarations(variableDeclarations);
+			String targetVariableName = RefactoringHelper.readString();
 			
 			System.out.println("What would you like to rename the variable to?");
-			String newVariableName = RefactoringHelpClass.readString();
+			String newVariableName = RefactoringHelper.readString();
 			
-			RenameVariableDeclaration.renameVariable(path,variableDeclarations,targetVariableName,newVariableName);
+			VariableDeclarationRenamer.renameVariable(path,variableDeclarations,targetVariableName,newVariableName);
 			
 			break;
 		}

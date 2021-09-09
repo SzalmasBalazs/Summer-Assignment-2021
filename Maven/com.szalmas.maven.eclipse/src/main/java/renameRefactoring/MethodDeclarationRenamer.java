@@ -1,4 +1,4 @@
-package refactoring;
+package renameRefactoring;
 
 
 	import com.github.javaparser.StaticJavaParser;
@@ -16,6 +16,7 @@ package refactoring;
 	import java.util.List;
 	
 	import exceptions.RefactoringException;
+	import refactoring.RefactoringHelper;
 	
 /**
  * Automatic Method renaming.
@@ -30,7 +31,7 @@ package refactoring;
 	
 	
 
-public class RenameMethodDeclaration {
+public class MethodDeclarationRenamer extends MethodDeclaration{
 	
 	 
 	
@@ -42,28 +43,24 @@ public class RenameMethodDeclaration {
 	 * 
 	 * 
 	 * @param path
+	 * @param newMethodName 
+	 * @param targetMethodName 
 	 * @throws IOException
 	 * @throws RefactoringException
 	 */
 	
-	public static void callMethodRenamingInit(Path path) throws IOException, RefactoringException {
+	public static void RenameMethod(Path path, String targetMethodName, String newMethodName) throws IOException, RefactoringException {
 		
-		System.out.println("Which method would you like to rename?");
 		
-		List<ClassOrInterfaceDeclaration> classAndOrInterfaces = RefactoringHelpClass.FindClassesOrInterfaces(path);	
-		RefactoringHelpClass.listMethods(classAndOrInterfaces);
-		
-			String targetMethodName = RefactoringHelpClass.readString();
-				
-			System.out.println("What would you like to rename the method to?");
-			String newMethodName = RefactoringHelpClass.readString();
-				
+			List<ClassOrInterfaceDeclaration> classAndOrInterfaces = RefactoringHelper.FindClassesOrInterfaces(path);		
 			MethodDeclaration targetMethod = findAndValidateMethod(classAndOrInterfaces,targetMethodName,newMethodName,path);
+			
 			for(MethodDeclaration d: refactoringRelevantMethods) {	
 				System.out.println(d.getNameAsString() +" , "+d.getDeclarationAsString());
 			}
 			System.out.println("\n");
-		String out = performRefactoring(targetMethod,targetMethodName,classAndOrInterfaces,path,newMethodName);
+			
+		String out = performRefactoring(targetMethod,targetMethodName,path,newMethodName);
 		System.out.println(out);
 				
 	}
@@ -79,8 +76,7 @@ public class RenameMethodDeclaration {
 	 * @return
 	 * @throws IOException
 	 */
-	private static  String performRefactoring(MethodDeclaration targetMethod, String targetMethodName, List<ClassOrInterfaceDeclaration> 
-					classAndOrInterfaces,Path path, String newMethodName) throws IOException {
+	private static  String performRefactoring(MethodDeclaration targetMethod, String targetMethodName,Path path, String newMethodName) throws IOException {
 		
 		CompilationUnit cu = LexicalPreservingPrinter.setup(StaticJavaParser.parse(path));
 		List<MethodDeclaration> MethodDeclarations = cu.findAll(MethodDeclaration.class);
@@ -104,7 +100,7 @@ public class RenameMethodDeclaration {
 		}
 		
 		
-		RefactoringHelpClass.writeOut(cu, path);
+		RefactoringHelper.writeOut(cu, path);
 		return "Renamed Method: "+targetMethodName +" to : "+ newMethodName;
 	}
 
