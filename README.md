@@ -6,4 +6,18 @@ Project title: Simple refactoring tool
 Concept: Making a Java compatible tool that is capable of doing
 simple refactorings automatically.
 
-README will be updated with neccesary information as the project progresses.
+How to Use:
+
+
+-Add a .java file to the sample_files folder.
+
+-Run the RefactoringToolExecutable.java as a Java application.
+
+-Choose from the available options (1 or 2) of Method renaming or extract method refactoring.
+
+-The app also outputs a .dot file with the AST of the file(s) that are being refactored, this can be (as of 08.19.21)
+
+ found in the root directory of the app. With the help of GraphViz you can turn this file into a graph.
+ 
+-GraphViz command: dot -Tpng ast.dot > ast.png
+  

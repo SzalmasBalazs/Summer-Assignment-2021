@@ -7,7 +7,7 @@
  * 
  */
 
-package LibraryHandler;
+package refactoring;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class fileReader {
+public class FileReader {
     
 public static List<String> returnArray = new ArrayList<>();
 

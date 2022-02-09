@@ -7,3 +7,7 @@ Refactoring_tool/src/LibraryHandler/DirectoryReader.class
 Refactoring_tool/src/LibraryHandler/fileReader.class
 Refactoring_tool/src/LibraryHandler/IOHandler.class
 Refactoring_tool/src/LibraryHandler/RefactoringMethods.class
+/.metadata/
+Maven/com.szalmas.maven.eclipse/sample_files/RefactoringMethods.class
+Maven/com.szalmas.maven.eclipse/src/main/java/com/szalmas/com/szalmas/maven/eclipse/LibraryHandler/fileReader.class
+Maven/com.szalmas.maven.eclipse/src/main/java/com/szalmas/com/szalmas/maven/eclipse/LibraryHandler/fileReader.class
